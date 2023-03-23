@@ -24,12 +24,7 @@ let apolloServer = async () => {
     context: { user: { email: "demo@gmail.com" } },
   });
 };
-/**
- * La limite ici, du fait d'utiliser le ApolloClient, est que je n'ai pas la maitrise de la
- * base de données, ça m'empeche par exemple de choisir une base de données en particulier
- * (sauf si on adapte le build de notre docker) mais surtout je ne peux pas demander à réinitialiser
- * la base de donnée avant chaque test sauf en appelant un resolver dédié pour ça (ce qui n'est pas terrible...)
- */
+
 
 
 const LIST_USERS = gql`
