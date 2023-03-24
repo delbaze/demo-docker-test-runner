@@ -34,6 +34,7 @@ services:
         condition: service_healthy
     volumes:
       - serverdata:/app/server
+      - ./testrunner/src:/app/src
     
 
 volumes:

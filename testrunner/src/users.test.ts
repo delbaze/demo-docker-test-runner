@@ -4,8 +4,22 @@ import datasource from "/app/server/src/lib/datasource";
 import UserResolver from "/app/server/src/resolvers/User.resolver";
 import { buildSchema } from "type-graphql";
 
-// console.log(datasource);
+let server: ApolloServer;
 
+beforeAll(async () => {
+  let apolloServer = async () => {
+    const schema = await buildSchema({
+      resolvers: [UserResolver],
+      validate: false,
+    });
+    return await new ApolloServer({
+      schema,
+      context: { user: { email: "demo@gmail.com" } },
+    });
+  };
+  server = await apolloServer();
+  server.listen();
+});
 beforeEach(async () => {
   await datasource.initialize();
   await datasource.dropDatabase();
@@ -14,18 +28,6 @@ beforeEach(async () => {
 afterEach(async () => {
   await datasource.destroy();
 });
-let apolloServer = async () => {
-  const schema = await buildSchema({
-    resolvers: [UserResolver],
-    validate: false,
-  });
-  return await new ApolloServer({
-    schema,
-    context: { user: { email: "demo@gmail.com" } },
-  });
-};
-
-
 
 const LIST_USERS = gql`
   query ListUsers {
@@ -58,10 +60,6 @@ const ADD_USER = gql`
 
 describe("User Resolver", () => {
   it("Users are empty", async () => {
-    let server = await apolloServer();
-    server.listen();
-    // server.start();
-
     let result = await server.executeOperation({
       query: LIST_USERS,
     });
@@ -70,9 +68,6 @@ describe("User Resolver", () => {
   });
 
   it("Users contain new user", async () => {
-    let server = await apolloServer();
-    server.listen();
-
     await server.executeOperation({
       query: ADD_USER,
       variables: {
@@ -87,6 +82,6 @@ describe("User Resolver", () => {
       query: LIST_USERS_TEST,
     });
     let users = result?.data?.listUsers;
-    expect(users).toEqual([{ __typename: "User", name: "demo" }]);
+    expect(users).toEqual([{ name: "demo" }]);
   });
 });
