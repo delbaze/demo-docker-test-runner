@@ -59,7 +59,8 @@ const ADD_USER = gql`
 describe("User Resolver", () => {
   it("Users are empty", async () => {
     let server = await apolloServer();
-    server.start();
+    server.listen();
+    // server.start();
 
     let result = await server.executeOperation({
       query: LIST_USERS,
@@ -70,7 +71,7 @@ describe("User Resolver", () => {
 
   it("Users contain new user", async () => {
     let server = await apolloServer();
-    server.start();
+    server.listen();
 
     await server.executeOperation({
       query: ADD_USER,
