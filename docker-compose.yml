@@ -23,6 +23,10 @@ services:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: database
+    ports:
+      - 5439:5432
+    expose:
+      - 5439
   testrunner:
     build: ./testrunner
     depends_on:
