@@ -1,7 +1,8 @@
+// import { datasource } from "/app/server/src/lib/datasource";
 import { gql, ApolloServer } from "apollo-server";
 
-import datasource from "/app/server/src/lib/datasource";
-import UserResolver from "/app/server/src/resolvers/User.resolver";
+import datasource from "@/datasource";
+import UserResolver from "@/resolvers/User";
 import { buildSchema } from "type-graphql";
 
 let server: ApolloServer;
